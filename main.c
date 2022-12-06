@@ -21,6 +21,7 @@
 
 
 int trackInfester(int patient_no, int *detected_time, int *place);
+
 int main(int argc, const char * argv[]) {
     
     int menu_selection;
@@ -46,6 +47,17 @@ int main(int argc, const char * argv[]) {
     }
     
     //1-2. loading each patient informations
+    
+     while (3 == fscanf(fp,"%d %d %d",&pIndex,&age,&time)) 
+	 {
+     	for (int i =0; i< 5; i++)
+		 {
+     		fscanf(fp, "%d",  placeHist[i]);
+		 }
+		 
+		 ifct_element = ifctele_genElement(pindex,age,time,placeHist);
+    	ifctdb_addTail(ifct_element);
+    }
     
     //1-3. FILE pointer close
     fclose(fp);

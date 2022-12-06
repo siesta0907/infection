@@ -97,3 +97,62 @@ char countryName[N_PLACE+1][MAX_PLACENAME] =
     "CapeTown",
     "Unrecognized"
 };
+
+typedef struct ifs_ele{
+	int index;
+	int age
+	int time;
+	place_t place[N_HISTORY]
+} ifs_ele_t;
+
+
+
+void* ifctele_genElement(int index, int age, unsigned int detected_time, int history_place[N_HISTORY])
+{
+	ifs_ele_t* ptr;
+	prt = malloc();
+	
+	ptr->index = index;
+	iptr->age = age;
+	ptr->time = detected_time;
+	ptr->place = history_place[N_HISTORY]
+	
+	return ptr;
+}
+
+char* ifctele_getPlaceName(int placeIndex)
+{
+	return countryName[placeIndex];
+}
+
+int ifctele_getHistPlaceIndex(void* obj, int index)
+{
+	
+}
+
+unsigned int ifctele_getinfestedTime(void* obj)
+{
+	
+}
+
+int ifctele_getAge(void* obj){
+	ifs_ele_t* ptr = (ifs_ele_t*)obj;
+	return ptr->age;
+}
+
+void ifctele_printElement(void* obj){
+	ifs_ele_t* ptr = (ifs_ele_t*)obj;
+	 
+	printf("환자 번호: %d\n", ptr->index);
+	printf("환자 나이: %d\n", ptr->age);
+	printf("환자 번호: %d\n", ptr->time);
+	printf("장소 출력: ");
+	for (i =0; i<N_HISTORY; i++){
+		printf("%d, ", place_t place[i]);
+	}
+	
+	
+}
+
+
+
