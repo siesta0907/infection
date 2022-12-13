@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "ifct_element.h"
+int i;
 
 typedef enum place {
     Seoul,          //0
@@ -100,9 +101,9 @@ char countryName[N_PLACE+1][MAX_PLACENAME] =
 
 typedef struct ifs_ele{
 	int index;
-	int age
+	int age;
 	int time;
-	place_t place[N_HISTORY]
+	place_t place[N_HISTORY];
 } ifs_ele_t;
 
 
@@ -110,12 +111,14 @@ typedef struct ifs_ele{
 void* ifctele_genElement(int index, int age, unsigned int detected_time, int history_place[N_HISTORY])
 {
 	ifs_ele_t* ptr;
-	prt = malloc();
+	ptr = malloc(sizeof(ifs_ele_t));
 	
 	ptr->index = index;
-	iptr->age = age;
+	ptr->age = age;
 	ptr->time = detected_time;
-	ptr->place = history_place[N_HISTORY]
+	for (i =0; i<N_HISTORY; i++) {
+		ptr->place[i] = history_place[i];
+	}
 	
 	return ptr;
 }
@@ -141,6 +144,7 @@ int ifctele_getAge(void* obj){
 }
 
 void ifctele_printElement(void* obj){
+	
 	ifs_ele_t* ptr = (ifs_ele_t*)obj;
 	 
 	printf("환자 번호: %d\n", ptr->index);
@@ -148,7 +152,7 @@ void ifctele_printElement(void* obj){
 	printf("환자 번호: %d\n", ptr->time);
 	printf("장소 출력: ");
 	for (i =0; i<N_HISTORY; i++){
-		printf("%d, ", place_t place[i]);
+		printf("%d, ", ptr->place[i]);
 	}
 	
 	

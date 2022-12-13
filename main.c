@@ -30,6 +30,11 @@ int main(int argc, const char * argv[]) {
     int pIndex, age, time;
     int placeHist[N_HISTORY];
     
+    //for문 인덱스 
+    int i;
+    //입력받을 환자 번호 
+    int p_no; 
+    
     //------------- 1. loading patient info file ------------------------------
     //1-1. FILE pointer open
     if (argc != 2)
@@ -50,13 +55,14 @@ int main(int argc, const char * argv[]) {
     
      while (3 == fscanf(fp,"%d %d %d",&pIndex,&age,&time)) 
 	 {
-     	for (int i =0; i< 5; i++)
+     	for (i =0; i< 5; i++)
 		 {
      		fscanf(fp, "%d",  placeHist[i]);
 		 }
 		 
-		 ifct_element = ifctele_genElement(pindex,age,time,placeHist);
+		ifct_element = ifctele_genElement(pIndex,age,time,placeHist);
     	ifctdb_addTail(ifct_element);
+    	printf("good\n");
     }
     
     //1-3. FILE pointer close
@@ -82,6 +88,10 @@ int main(int argc, const char * argv[]) {
                 break;
                 
             case MENU_PATIENT:
+            	
+				printf("환자 번호를 입력하세요: ");
+            	scanf("%d", &p_no);
+            	ifctele_printElement(ifctdb_getData(p_no));
                 
                 break;
                 
