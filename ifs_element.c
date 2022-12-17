@@ -99,6 +99,7 @@ char countryName[N_PLACE+1][MAX_PLACENAME] =
     "Unrecognized"
 };
 
+//구조체 
 typedef struct ifs_ele{
 	int index;
 	int age;
@@ -107,7 +108,7 @@ typedef struct ifs_ele{
 } ifs_ele_t;
 
 
-
+//입력한 정보의 노드를 생성하는 함수 
 void* ifctele_genElement(int index, int age, unsigned int detected_time, int history_place[N_HISTORY])
 {
 	ifs_ele_t* ptr;
@@ -123,37 +124,45 @@ void* ifctele_genElement(int index, int age, unsigned int detected_time, int his
 	return ptr;
 }
 
+//장소번호를 입력받으면 장소를 리턴하는 함수 
 char* ifctele_getPlaceName(int placeIndex)
 {
 	return countryName[placeIndex];
 }
 
+//입력받은 번호의 장소를 리턴하는 함수 
 int ifctele_getHistPlaceIndex(void* obj, int index)
 {
-	
+	ifs_ele_t* ptr = (ifs_ele_t*)obj;
+	return ptr->place[index];
 }
 
+//감염 날짜 리턴하는 함수 
 unsigned int ifctele_getinfestedTime(void* obj)
 {
-	
+	ifs_ele_t* ptr = (ifs_ele_t*)obj;
+	return ptr->time;
 }
 
+//환자 나이를 얻는 함수 
 int ifctele_getAge(void* obj){
 	ifs_ele_t* ptr = (ifs_ele_t*)obj;
 	return ptr->age;
 }
 
+//환자 정보 출력하는 함수 
 void ifctele_printElement(void* obj){
 	
 	ifs_ele_t* ptr = (ifs_ele_t*)obj;
-	 
+	printf("-----------------------------\n");
 	printf("환자 번호: %d\n", ptr->index);
 	printf("환자 나이: %d\n", ptr->age);
 	printf("환자 감염일자: %d\n", ptr->time);
 	printf("장소 출력: ");
 	for (i =0; i<N_HISTORY; i++){
-		printf("%d ", ptr->place[i]);
+		printf("%s ", ifctele_getPlaceName(ptr->place[i]));
 	}
+	printf("\n-----------------------------\n");
 	
 	
 }

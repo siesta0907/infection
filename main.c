@@ -34,8 +34,11 @@ int main(int argc, const char * argv[]) {
     
     //for문 인덱스 
     int i;
-    //입력받을 환자 번호 
-    int p_no, min_age, max_age; 
+    //입력받을 환자 번호, 최소 나이, 최대 나이 
+    int p_no, min_age, max_age;
+	char place_[MAX_PLACENAME]; 
+	//장소 있는지 확인할 변수 
+	int isplace;
     
     //------------- 1. loading patient info file ------------------------------
     //1-1. FILE pointer open
@@ -93,6 +96,7 @@ int main(int argc, const char * argv[]) {
                 break;
                 
             case MENU_PATIENT:
+ 
             	printf("입력하신 환자의 정보를 출력합니다. \n");
 				printf("환자 번호를 입력하세요: ");
             	scanf("%d", &p_no);
@@ -101,14 +105,52 @@ int main(int argc, const char * argv[]) {
                 break;
                 
             case MENU_PLACE:
+            	
+				printf("입력하신 장소에서 감염된 환자들의 정보를 출력합니다. \n"); 
+            	printf("장소를 문자열로 입력해주세요: ");
+                scanf("%s", &place_);
                 
+                isplace = 0;
+                
+                for(i = 0; i< N_PLACE; i++){
+                	//장소를 제대로 입력했을때 isplace를 1로 설정 
+                	if (strcmp(place_, ifctele_getPlaceName(i)) == 0) isplace =1;
+				}
+                
+                if (!isplace){
+                	printf("입력하신 %s 는 없는 장소입니다.\n", place_);
+				}
+				
+				else{
+					printf("입력하신 %s에서 감염된 환자들의 정보입니다.\n", place_);
+					for (i = 0; i < ifctdb_len(); i++)
+					{
+						
+						if  (strcmp(place_, ifctele_getPlaceName(ifctele_getHistPlaceIndex(ifctdb_getData(i), N_HISTORY -1))) ==0)
+						{
+							ifctele_printElement(ifctdb_getData(i));
+						}
+					}
+				}
+				
                 break;
                 
             case MENU_AGE:
-            	printf("입력하신 나이 범위에 해당하는 환자들의 정보를 출력합니다. \n");
-				printf("최소 나이와 최대 나이를 입력하세요: ");
+            	
+				printf("입력하신 나이 범위에 해당하는 환자들의 정보를 출력합니다. \n");
+				printf("최소 나이와 최대 나이를 입력하세요(공백으로 구분)): ");
             	scanf("%d %d", &min_age, &max_age);
-                
+
+	           	for (i = 0; i < ifctdb_len(); i++){
+	           		
+	                if (min_age <= ifctele_getAge(ifctdb_getData(i)) && max_age >= ifctele_getAge(ifctdb_getData(i)))
+	                {
+	                	ifctele_printElement(ifctdb_getData(i));
+					}
+	                    		
+	            }
+
+
                 break;
                 
             case MENU_TRACK:
