@@ -5,9 +5,11 @@
 //  Created by Juyeop Kim on 2022/10/20.
 //
 
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "ifct_element.h"
 #include "ifct_database.h"
 
@@ -37,6 +39,8 @@ int main(int argc, const char * argv[]) {
     
     //------------- 1. loading patient info file ------------------------------
     //1-1. FILE pointer open
+    
+	//main 함수 매개변수가 2개가 아니면 오류 프린트 
     if (argc != 2)
     {
         printf("[ERROR] syntax : infestPath (file path).");
@@ -44,20 +48,20 @@ int main(int argc, const char * argv[]) {
     }
     
     fp = fopen(argv[1],"r");
+    //파일을 읽지 못했을 때 오류 프린트 
     if (fp == NULL)
     {
-        
         printf("[ERROR] Failed to open database file!! (%s)\n", argv[1]);
         return -1;
     }
     
     //1-2. loading each patient informations
-    
+    // 텍스트 3개 입력받아서 번호, 나이, 시간 읽어옴  
      while (3 == fscanf(fp,"%d %d %d",&pIndex,&age,&time)) 
 	 {
      	for (i =0; i< 5; i++)
 		 {
-     		fscanf(fp, "%d",  placeHist[i]);
+     		fscanf(fp, "%d",  placeHist[i]); //5개의 이동경로 placeHist에 저장  
 		 }
 		 
 		ifct_element = ifctele_genElement(pIndex,age,time,placeHist);
