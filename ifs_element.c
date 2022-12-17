@@ -155,10 +155,10 @@ void ifctele_printElement(void* obj){
 	
 	ifs_ele_t* ptr = (ifs_ele_t*)obj;
 	printf("-----------------------------\n");
-	printf("환자 번호: %d\n", ptr->index);
-	printf("환자 나이: %d\n", ptr->age);
-	printf("환자 감염일자: %d\n", ptr->time);
-	printf("장소 출력: ");
+	printf("환자 번호: %d번\n", ptr->index);
+	printf("환자 나이: %d세\n", ptr->age);
+	printf("환자 감염일자: %d일\n", ptr->time);
+	printf("이동 경로 출력: ");
 	for (i =0; i<N_HISTORY; i++){
 		printf("%s ", ifctele_getPlaceName(ptr->place[i]));
 	}

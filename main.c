@@ -122,10 +122,10 @@ int main(int argc, const char * argv[]) {
 				}
 				
 				else{
-					printf("입력하신 %s에서 감염된 환자들의 정보입니다.\n", place_);
+					printf("%s에서 감염된 환자들의 정보입니다.\n", place_);
 					for (i = 0; i < ifctdb_len(); i++)
 					{
-						
+						//입력한 장소에서 감염된 환자 정보 출력 
 						if  (strcmp(place_, ifctele_getPlaceName(ifctele_getHistPlaceIndex(ifctdb_getData(i), N_HISTORY -1))) ==0)
 						{
 							ifctele_printElement(ifctdb_getData(i));
@@ -150,11 +150,16 @@ int main(int argc, const char * argv[]) {
 	                    		
 	            }
 
-
                 break;
                 
             case MENU_TRACK:
-                    
+                
+				printf("각 환자의 전파자와 감염당한 시점 및 장소 그리고 최초 전파자를 출력합니다. \n"); 
+            	for (i = 0; i < ifctdb_len(); i++)
+				{
+					
+				}
+				    
                 break;
                 
             default:
@@ -164,7 +169,7 @@ int main(int argc, const char * argv[]) {
     
     } while(menu_selection != 0);
     
-    printf("종료\n"); 
+    //printf("종료\n"); 
     
     return 0;
 }

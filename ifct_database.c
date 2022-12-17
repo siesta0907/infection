@@ -110,6 +110,7 @@ static int updateIndex(void)
                 3. make the last node's next pointer to point the new node
                 4. update the index
 */
+
 //노드 추가하는 함수 
 int ifctdb_addTail(void* obj)
 {
@@ -167,6 +168,8 @@ int ifctdb_addTail(void* obj)
     input parameters : index - index'th data to delete
     return value : deletion result (0 - succeeded, -1 - failed)
 */
+
+
 //입력한 번호의 노드를 삭제하는 함수 
 int ifctdb_deleteData(int index)
 {
