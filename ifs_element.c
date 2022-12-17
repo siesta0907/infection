@@ -149,10 +149,10 @@ void ifctele_printElement(void* obj){
 	 
 	printf("환자 번호: %d\n", ptr->index);
 	printf("환자 나이: %d\n", ptr->age);
-	printf("환자 번호: %d\n", ptr->time);
+	printf("환자 감염일자: %d\n", ptr->time);
 	printf("장소 출력: ");
 	for (i =0; i<N_HISTORY; i++){
-		printf("%d, ", ptr->place[i]);
+		printf("%d ", ptr->place[i]);
 	}
 	
 	

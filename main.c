@@ -5,8 +5,8 @@
 //  Created by Juyeop Kim on 2022/10/20.
 //
 
-//#define _CRT_SECURE_NO_WARNINGS
-#include <stdlib.h>
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <string.h>
 
@@ -35,7 +35,7 @@ int main(int argc, const char * argv[]) {
     //for문 인덱스 
     int i;
     //입력받을 환자 번호 
-    int p_no; 
+    int p_no, min_age, max_age; 
     
     //------------- 1. loading patient info file ------------------------------
     //1-1. FILE pointer open
@@ -48,6 +48,7 @@ int main(int argc, const char * argv[]) {
     }
     
     fp = fopen(argv[1],"r");
+    
     //파일을 읽지 못했을 때 오류 프린트 
     if (fp == NULL)
     {
@@ -57,18 +58,18 @@ int main(int argc, const char * argv[]) {
     
     //1-2. loading each patient informations
     // 텍스트 3개 입력받아서 번호, 나이, 시간 읽어옴  
-     while (3 == fscanf(fp,"%d %d %d",&pIndex,&age,&time)) 
+     while (3 == (fscanf(fp,"%d %d %d ",&pIndex,&age,&time)))
 	 {
      	for (i =0; i< 5; i++)
 		 {
-     		fscanf(fp, "%d",  placeHist[i]); //5개의 이동경로 placeHist에 저장  
+     		fscanf(fp, "%d ",  &placeHist[i]); //5개의 이동경로 placeHist에 저장  
 		 }
 		 
 		ifct_element = ifctele_genElement(pIndex,age,time,placeHist);
     	ifctdb_addTail(ifct_element);
-    	printf("good\n");
+    	
     }
-    
+   // printf("파일 잘 읽음\n");
     //1-3. FILE pointer close
     fclose(fp);
     
@@ -92,7 +93,7 @@ int main(int argc, const char * argv[]) {
                 break;
                 
             case MENU_PATIENT:
-            	
+            	printf("입력하신 환자의 정보를 출력합니다. \n");
 				printf("환자 번호를 입력하세요: ");
             	scanf("%d", &p_no);
             	ifctele_printElement(ifctdb_getData(p_no));
@@ -104,6 +105,9 @@ int main(int argc, const char * argv[]) {
                 break;
                 
             case MENU_AGE:
+            	printf("입력하신 나이 범위에 해당하는 환자들의 정보를 출력합니다. \n");
+				printf("최소 나이와 최대 나이를 입력하세요: ");
+            	scanf("%d %d", &min_age, &max_age);
                 
                 break;
                 
@@ -118,6 +122,7 @@ int main(int argc, const char * argv[]) {
     
     } while(menu_selection != 0);
     
+    printf("종료\n"); 
     
     return 0;
 }

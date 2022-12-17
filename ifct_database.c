@@ -167,6 +167,7 @@ int ifctdb_addTail(void* obj)
     input parameters : index - index'th data to delete
     return value : deletion result (0 - succeeded, -1 - failed)
 */
+//입력한 번호의 노드를 삭제하는 함수 
 int ifctdb_deleteData(int index)
 {
     node_t* ndPrevPtr;
@@ -215,6 +216,8 @@ int ifctdb_deleteData(int index)
     description : return the number of data objects in the list
     return value : length
 */
+
+//노드 길이를 리턴하는 함수 
 int ifctdb_len(void)
 {
     return list_cnt;
@@ -226,6 +229,8 @@ int ifctdb_len(void)
     input parameters : index
     return value : object pointer
 */
+
+//입력하신 번호의 노드를 리턴하는 함수 
 void* ifctdb_getData(int index)
 {
     void* obj = NULL;
