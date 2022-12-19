@@ -22,24 +22,25 @@
 #define TIME_HIDE           2
 
 
-int trackInfester(int patient_no, int *detected_time, int *place);
+int trackInfester(int patient_no, int detected_time, int *place); //전파자 번호 리턴하는 함수 
 
 int main(int argc, const char * argv[]) {
     
-    int menu_selection;
-    void *ifct_element;
+    int menu_selection; //메뉴 고르는 번호 
+    void *ifct_element; //파일 불러올때 쓰는 변수들 
     FILE* fp;
     int pIndex, age, time;
     int placeHist[N_HISTORY];
     
-    //for문 인덱스 
-    int i;
-    //입력받을 환자 번호, 최소 나이, 최대 나이 
-    int p_no, min_age, max_age;
-	char place_[MAX_PLACENAME]; 
-	//장소 있는지 확인할 변수 
-	int isplace;
     
+    int i; //for문 인덱스 
+    int p_no, min_age, max_age; //입력받을 환자 번호, 최소 나이, 최대 나이 
+    
+	char place_[MAX_PLACENAME];  //입력받은 장소 
+	int isplace;  //장소 있는지 확인할 변수 
+	int infester = -1; //전파자 환자 인덱스
+	int places[5]; //환자추격할때 쓰는 변수, 이동경로 저장할 장소 
+	 
     //------------- 1. loading patient info file ------------------------------
     //1-1. FILE pointer open
     
@@ -72,7 +73,7 @@ int main(int argc, const char * argv[]) {
     	ifctdb_addTail(ifct_element);
     	
     }
-   // printf("파일 잘 읽음\n");
+
     //1-3. FILE pointer close
     fclose(fp);
     
@@ -154,13 +155,22 @@ int main(int argc, const char * argv[]) {
                 
             case MENU_TRACK:
                 
-				printf("각 환자의 전파자와 감염당한 시점 및 장소 그리고 최초 전파자를 출력합니다. \n"); 
-            	for (i = 0; i < ifctdb_len(); i++)
-				{
-					
-				}
-				    
-                break;
+				printf("입력하신 환자의 전파자를 추적해 최초 전파자를 출력합니다. \n");
+				printf("환자 번호를 입력하세요: ");
+            	scanf("%d", &p_no);
+            	
+				
+				do{
+					for(i =0; i< 5; i++)
+					{
+	                    places[i] = ifctele_getHistPlaceIndex(ifctdb_getData(p_no), i);
+					}
+					infester = trackInfester(p_no, ifctele_getinfestedTime(ifctdb_getData(p_no)), &places[0]);
+					p_no = infester;
+				} while(infester != -1);
+				
+						
+				break;
                 
             default:
                 printf("[ERROR Wrong menu selection! (%i), please choose between 0 ~ 4\n", menu_selection);
@@ -169,7 +179,66 @@ int main(int argc, const char * argv[]) {
     
     } while(menu_selection != 0);
     
-    //printf("종료\n"); 
     
     return 0;
+}
+
+//전파자 찾는 함수
+//환자 번호와 발병 확인된 날짜, 5개의 이동 장소(배열)를 입력받으면 전파자의 인덱스를 리턴, 없으면 -1 리턴
+ 
+int trackInfester(int patient_no, int detected_time, int *place){
+	
+	
+	int i, j; //반복문 변수 
+	int infestTime = detected_time; //감염된 날짜, detected_time으로 초기 
+	int infestplace;
+	int  p_no , p_time, p_place1, p_place2; //비교환자의 정보를 담을 변수들 
+	int infesterNum = -1; //전파자 번호 
+
+	
+	for (i =0; i< ifctdb_len(); i++) { 	//환자 수 만큼 반복 
+		if (patient_no != i) 	//비교하는 환자 리스트중에서 자기 자신을 제외하게끔 
+		{
+			p_no = i;
+		   	p_time = ifctele_getinfestedTime(ifctdb_getData(i));
+			p_place1 = ifctele_getHistPlaceIndex(ifctdb_getData(i), N_HISTORY-1); //비교환자의 발병 확인 당일날 장소 
+			p_place2 = ifctele_getHistPlaceIndex(ifctdb_getData(i), N_HISTORY-2); //비교환자의 발병 확인 전날 장소 
+			
+			for(j =0; j<3; j++) //감염가능한 날짜만큼 조사 
+			{
+				//발병 확인 당일날 같은 장소, 시간에 있었는지 검사 
+				if ((place[0+j] == p_place1) && (detected_time -4+j == p_time))
+				{
+					if(infestTime > p_time) 
+					{
+						infestTime = p_time; 
+						infesterNum = p_no;
+						infestplace = p_place1;
+					}
+					
+				}
+				
+				//발병 확인 전날 같은 장소, 시간에 있었는지 검사 
+				if ((place[0+j] == p_place2) && (detected_time -4+j == p_time-1))
+				{
+					if(infestTime > p_time) 
+					{
+						infestTime = p_time; 
+						infesterNum = p_no;
+						infestplace = p_place2;
+					}
+				}
+				
+			}
+		}
+		
+	}
+	if (infesterNum == -1){
+		printf("%d번 환자는 최초 전파자입니다. \n", patient_no);
+	} 
+	else
+	{
+		printf("%d번 환자는 %d 번 환자에게 %d일에 %s 에서 감염당하였습니다. \n", patient_no, infesterNum, infestTime, ifctele_getPlaceName(infestplace));
+	}
+	return infesterNum;
 }
